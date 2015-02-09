@@ -5,7 +5,7 @@ Live agent widget for iOS written in swift.
 
 This widget is not just an email type of support widget. The TTLiveAgentWidget shows knowledgebase articles to users, so they can quickly find a solution for their issue. It works with any live agent server with API version 1. 
 
-For better performance and security we recommend to use a proxy server.
+For better performance and security we recommend to use a proxy server. See our proxy server [TTLiveAgentWidget-ProxyServer](https://github.com/tappytaps/TTLiveAgentWidget-ProxyServer).
 
 <img src="docs/screen1.PNG" width="240px">
 <img src="docs/screen2.PNG" width="240px">
