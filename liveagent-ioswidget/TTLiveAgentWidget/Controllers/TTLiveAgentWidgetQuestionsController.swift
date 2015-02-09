@@ -216,7 +216,7 @@ private class IconTableViewCell: UITableViewCell {
     
     func setupViews() {
         iconView = UIImageView()
-        iconView.frame = CGRect(x: 8, y: 12, width: self.contentView.frame.height - 10, height: self.contentView.frame.height - 24)
+        iconView.frame = CGRect(x: 14, y: 12, width: self.contentView.frame.height - 10, height: self.contentView.frame.height - 24)
         iconView.contentMode = UIViewContentMode.ScaleAspectFit
         contentView.addSubview(iconView)
         
