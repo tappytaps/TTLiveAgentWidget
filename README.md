@@ -7,8 +7,8 @@ This widget is not just an email type of support widget. The TTLiveAgentWidget s
 
 For better performance and security we recommend to use a proxy server. See our proxy server [TTLiveAgentWidget-ProxyServer](https://github.com/tappytaps/TTLiveAgentWidget-ProxyServer).
 
-<img src="docs/screen1.PNG" width="240px">
-<img src="docs/screen2.PNG" width="240px">
+<img src="Docs/screen1.PNG" width="240px">
+<img src="Docs/screen2.PNG" width="240px">
 
 Usage
 ----------

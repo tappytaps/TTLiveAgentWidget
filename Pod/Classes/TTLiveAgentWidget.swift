@@ -9,13 +9,13 @@
 import UIKit
 import MessageUI
 
-enum TTLiveAgentWidgetStyle {
+public enum TTLiveAgentWidgetStyle {
     case Push, Present
 }
 
 private let _TTLiveAgentWidget = TTLiveAgentWidget()
 
-class TTLiveAgentWidget: NSObject {
+public class TTLiveAgentWidget: NSObject {
     
     //
     // Dependencies
@@ -28,21 +28,24 @@ class TTLiveAgentWidget: NSObject {
     //
     // Configuration
     // 
+    // maxArticleCount - max count of showed articles in topic
     // topics - array of topics which filters articles
-    // emailSubject - Email subject for email composer.
-    // color - defines color theme of widget's controllers (tint colors, etc.)
+    // supportEmail - email address for support
+    // supportEmailFooter - dictionary of footer data (key, value)
+    // spportEmailSubject - Email subject for email composer
     //
-    var maxArticlesCount = 5
-    var topics: [SupportTopic]!
+    public var maxArticlesCount = 5
+    public var topics: [SupportTopic]!
     
-    var supportEmail = ""
-    var supportEmailSubject = "iOS App - feedback/support"
-    var supportEmailFooter = [String: AnyObject]()
+    public var supportEmail = ""
+    public var supportEmailSubject = "iOS App - feedback/support"
+    public var supportEmailFooter = [String: AnyObject]()
     
-    var tintColor: UIColor!
-    var navigationBarColor: UIColor!
-    var titleColor: UIColor!
-    var statusBarStyle: UIBarStyle!
+    // navigation bar appereance
+    public var tintColor: UIColor!
+    public var navigationBarColor: UIColor!
+    public var titleColor: UIColor!
+    public var statusBarStyle: UIBarStyle!
     
     //
     // Configuration - data manager
@@ -50,7 +53,7 @@ class TTLiveAgentWidget: NSObject {
     // API URL - url without slash at the end, e.g. 'http://localhost:9000'
     // Folder ID - id of live agent folder
     // API Key - live agent apikey
-    var apiURL: String {
+    public var apiURL: String {
         get {
             return self.dataManager.apiURL
         }
@@ -59,7 +62,7 @@ class TTLiveAgentWidget: NSObject {
         }
     }
     
-    var apiKey: String {
+    public var apiKey: String {
         get {
             return self.dataManager.apiKey
         }
@@ -68,7 +71,7 @@ class TTLiveAgentWidget: NSObject {
         }
     }
     
-    var folderId: String {
+    public var folderId: String {
         get {
             return self.dataManager.folderId
         }
@@ -87,7 +90,7 @@ class TTLiveAgentWidget: NSObject {
     // If data manager has any articles and widget has any topics, then open main widget controller.
     // If the are no topics or articles then open email composer.
     //
-    func open(fromController controller: UIViewController, style: TTLiveAgentWidgetStyle) {
+    public func open(fromController controller: UIViewController, style: TTLiveAgentWidgetStyle) {
         if topics.count > 0 && dataManager.articles.count > 0 {
             showTopicsController(fromController: controller, style: style)
         } else {
@@ -101,7 +104,7 @@ class TTLiveAgentWidget: NSObject {
     // Allows to open topic questions controller by given keyword. 
     // If given keyword does not fit any topic act like primary function.
     //
-    func open(fromController controller: UIViewController, keyword: String, style: TTLiveAgentWidgetStyle) {
+    public func open(fromController controller: UIViewController, keyword: String, style: TTLiveAgentWidgetStyle) {
         if topics.count > 0 && dataManager.articles.count > 0 {
             var law = TTLiveAgentWidgetQuestionsController()
             let filteredTopics = topics.filter({$0.key == keyword})
@@ -123,14 +126,14 @@ class TTLiveAgentWidget: NSObject {
     //
     // Open system Email composer
     //
-    func openEmailComposer(fromController controller: UIViewController, topic: SupportTopic?) {
+    public func openEmailComposer(fromController controller: UIViewController, topic: SupportTopic?) {
         self.emailComposer.show(fromController: controller, topic: topic)
     }
     
     //
     //
     //
-    func updateArticles(onSuccess: (()->Void)?, onError: (()->Void)?) {
+    public func updateArticles(onSuccess: (()->Void)?, onError: (()->Void)?) {
         self.dataManager.updateArticles(onSuccess, onError: onError)
     }
     
@@ -169,23 +172,35 @@ class TTLiveAgentWidget: NSObject {
         }
     }
     
-    class func getInstance() -> TTLiveAgentWidget {
+    public class func getInstance() -> TTLiveAgentWidget {
         return _TTLiveAgentWidget
     }
 }
 
 // MARK: - data manager
 
-struct SupportTopic {
+public struct SupportTopic {
     var key: String
     var title: String
+    
+    public init(key: String, title: String) {
+        self.key = key
+        self.title = title
+    }
 }
 
-struct SupportArticle {
+public struct SupportArticle {
     var title: String
     var content: String
     var keywords: String
     var order: Int
+    
+    public init(title: String, content: String, keywords: String, order: Int) {
+        self.title = title
+        self.content = content
+        self.keywords = keywords
+        self.order = order
+    }
 }
 
 class TTLiveAgentWidgetDataManager: NSObject {
@@ -229,7 +244,7 @@ class TTLiveAgentWidgetDataManager: NSObject {
     //
     func updateArticles(onSuccess: (()->Void)?, onError: (()->Void)?) {
         
-        var url = "\(apiURL)/api/knowledgebase/articles?parent_id=\(folderId)"
+        var url = "\(apiURL)/api/knowledgebase/articless?parent_id=\(folderId)"
         
         // if there is md5 hash add it or url
         if let hash = self.articlesMD5 {
@@ -256,14 +271,21 @@ class TTLiveAgentWidgetDataManager: NSObject {
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue(), completionHandler: {
             response, data, error in
             
-            if error == nil && (response as NSHTTPURLResponse).statusCode == 200 {
+            if error != nil {
+                println("TTLiveAgentWidget - \(error!.localizedDescription)")
+                return
+            }
+            
+            if (response as NSHTTPURLResponse).statusCode == 200 {
                 var error: NSError?
+                
+                
                 let json = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &error) as NSDictionary
                 
                 // Check if data up to date
                 let upToDate = json["up-to-date"] as? Bool
                 if upToDate != nil && upToDate! == true {
-                    println("Support articles are up to date.")
+                    println("TTLiveAgentWidget - support articles are up to date.")
                     
                     dispatch_async(dispatch_get_main_queue(), {
                         let _ = onSuccess?()
@@ -299,7 +321,7 @@ class TTLiveAgentWidgetDataManager: NSObject {
                         
                         // Sort articles by order
                         self.saveArticles(self.articles)
-                        println("New articles saved")
+                        println("TTLiveAgentWidget - new articles saved")
                         if let hash = hash {
                             self.articlesMD5 = hash
                         }
@@ -318,6 +340,8 @@ class TTLiveAgentWidgetDataManager: NSObject {
                     })
                 }
             } else {
+                println("TTLiveAgentWidget - request URL: \((response as NSHTTPURLResponse).URL)")
+                println("TTLiveAgentWidget - server responded with status code \((response as NSHTTPURLResponse).statusCode)")
                 dispatch_async(dispatch_get_main_queue(), {
                     let _ = onError?()
                 })
@@ -373,7 +397,7 @@ class TTLiveAgentWidgetEmailComposer: NSObject {
     func show(fromController controller: UIViewController, topic: SupportTopic?) {
         
         if TTLiveAgentWidget.getInstance().supportEmail == "" {
-            println("Can't open email composer without support email address.")
+            println("TTLiveAgentWidget - can't open email composer without support email address.")
             return
         }
         
@@ -401,7 +425,7 @@ class TTLiveAgentWidgetEmailComposer: NSObject {
             
             controller.presentViewController(mailController, animated: true, completion: nil)
         } else {
-            println("can't send email")
+            println("TTLiveAgentWidget - can not send email")
         }
         
     }

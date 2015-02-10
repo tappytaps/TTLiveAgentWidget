@@ -1,26 +1,26 @@
 //
-//  MainViewController.swift
-//  liveagent-ioswidget
+//  ViewController.swift
+//  TTLiveAgentWidgetExample
 //
-//  Created by Lukas Boura on 29/01/15.
+//  Created by Lukas Boura on 10/02/15.
 //  Copyright (c) 2015 TappyTaps s.r.o. All rights reserved.
 //
 
 import UIKit
+import TTLiveAgentWidget
 
-class MainViewController: UIViewController {
+class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Do any additional setup after loading the view.
+        // Do any additional setup after loading the view, typically from a nib.
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     @IBAction func goToWidget(sender: AnyObject) {
         
         // Get Support widget instance
@@ -31,7 +31,7 @@ class MainViewController: UIViewController {
             SupportTopic(key: "ios-general", title: "General issue"),
             SupportTopic(key: "ios-problem", title: "Something is not working")
         ]
-    
+        
         // Config email
         supportWidget.supportEmail = "mysupport@mydomain.com"
         supportWidget.supportEmailSubject = "My iOS App - feedback"
@@ -44,18 +44,6 @@ class MainViewController: UIViewController {
         // Open widget
         supportWidget.open(fromController: self, style: .Push)
     }
-    
-    
-    func createStringFromDictionary(dict: NSDictionary) -> String {
-        var params: String!
-        for (key, value) in dict {
-            if params == nil {
-                params = "\(key)=\(value)"
-            } else {
-                params = params + "&\(key)=\(value)"
-            }
-        }
-        return params
-    }
 
 }
+

@@ -1,0 +1,14 @@
+PODS:
+  - TTLiveAgentWidget (0.1.0)
+
+DEPENDENCIES:
+  - TTLiveAgentWidget (from `../`)
+
+EXTERNAL SOURCES:
+  TTLiveAgentWidget:
+    :path: ../
+
+SPEC CHECKSUMS:
+  TTLiveAgentWidget: f6230de471239e9e90bc1a4eb6acbefbef8dba6f
+
+COCOAPODS: 0.36.0.beta.2

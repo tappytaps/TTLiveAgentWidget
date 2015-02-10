@@ -1,12 +1,13 @@
 //
 //  AppDelegate.swift
-//  liveagent-ioswidget
+//  TTLiveAgentWidgetExample
 //
-//  Created by Lukas Boura on 28/01/15.
+//  Created by Lukas Boura on 10/02/15.
 //  Copyright (c) 2015 TappyTaps s.r.o. All rights reserved.
 //
 
 import UIKit
+import TTLiveAgentWidget
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,7 +16,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
         
         let liveAgentWidget = TTLiveAgentWidget.getInstance()
         
@@ -24,6 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         liveAgentWidget.updateArticles(nil, onError: nil)
         
+        // Override point for customization after application launch.
         return true
     }
 
