@@ -164,7 +164,14 @@ extension TTLiveAgentWidgetQuestionsController {
         } else {
             var cell = tableView.dequeueReusableCellWithIdentifier(kLAIconCellIdentifier) as IconTableViewCell
             cell.accessoryType = .DisclosureIndicator
-            cell.iconView.image = UIImage(named: "Envelope.png")
+            var image = UIImage(named: "Envelope.png")
+            image = image?.imageWithRenderingMode(.AlwaysTemplate)
+            
+            cell.iconView.image = image
+            
+            if tintColor != nil {
+                cell.iconView.tintColor = tintColor
+            }
             cell.titleLabel.text = NSLocalizedString("Send email to support", comment: "Send support email table view row.")
             return cell
         }
@@ -216,12 +223,12 @@ private class IconTableViewCell: UITableViewCell {
     
     func setupViews() {
         iconView = UIImageView()
-        iconView.frame = CGRect(x: 14, y: 12, width: self.contentView.frame.height - 10, height: self.contentView.frame.height - 24)
+        iconView.frame = CGRect(x: 12, y: 14, width: self.contentView.frame.height - 10, height: self.contentView.frame.height - 28)
         iconView.contentMode = UIViewContentMode.ScaleAspectFit
         contentView.addSubview(iconView)
         
         titleLabel = UILabel()
-        titleLabel.frame = CGRect(x: iconView.frame.maxX + 8, y: 0, width: self.contentView.frame.width - (iconView.frame.maxX + 8), height: self.contentView.frame.height)
+        titleLabel.frame = CGRect(x: iconView.frame.maxX + 6, y: 0, width: self.contentView.frame.width - (iconView.frame.maxX + 6), height: self.contentView.frame.height)
         titleLabel.font = UIFont.systemFontOfSize(16)
         contentView.addSubview(titleLabel)
         
