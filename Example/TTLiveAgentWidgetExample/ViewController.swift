@@ -26,7 +26,7 @@ class ViewController: UIViewController {
         // Get Support widget instance
         var supportWidget = TTLiveAgentWidget.getInstance()
         
-        // Config wiidget
+        // Config widget
         supportWidget.topics = [
             TTLiveAgentWidgetSupportTopic(key: "ios-general", title: "General issue"),
             TTLiveAgentWidgetSupportTopic(key: "ios-problem", title: "Something is not working")

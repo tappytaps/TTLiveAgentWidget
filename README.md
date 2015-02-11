@@ -10,6 +10,15 @@ For better performance and security we recommend to use a proxy server. See our 
 <img src="docs/screen1.PNG" width="240px">
 <img src="docs/screen2.PNG" width="240px">
 
+Instalation
+----------
+
+- Requires iOS 7.0+
+
+Manually drop content of `Pod` folder to your project.
+
+Or via CocoaPods: `pod 'TTLiveAgentWidget'`
+
 Usage
 ----------
 
