@@ -15,7 +15,7 @@ Instalation
 
 - Requires iOS 7.0+
 
-Manually drop content of `Pod` folder to your project.
+Manually drop content of `Pod` folder in your project.
 
 Or via CocoaPods: `pod 'TTLiveAgentWidget'`
 
