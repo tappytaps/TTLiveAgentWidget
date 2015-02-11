@@ -28,8 +28,8 @@ class ViewController: UIViewController {
         
         // Config wiidget
         supportWidget.topics = [
-            SupportTopic(key: "ios-general", title: "General issue"),
-            SupportTopic(key: "ios-problem", title: "Something is not working")
+            TTLiveAgentWidgetSupportTopic(key: "ios-general", title: "General issue"),
+            TTLiveAgentWidgetSupportTopic(key: "ios-problem", title: "Something is not working")
         ]
         
         // Config email
@@ -42,7 +42,7 @@ class ViewController: UIViewController {
         ]
         
         // Open widget
-        supportWidget.open(fromController: self, style: .Push)
+        supportWidget.open(fromController: self, style: TTLiveAgentWidgetStyle.Push)
     }
 
 }
