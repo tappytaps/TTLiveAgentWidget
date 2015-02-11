@@ -12,7 +12,7 @@ import Foundation
 class TTLiveAgentWidgetTopicsController: UITableViewController {
     
     // Configuration
-    var topics: [SupportTopic]!
+    var topics: [TTLiveAgentWidgetSupportTopic]!
     var tintColor: UIColor!
     var barColor: UIColor!
     var titleColor: UIColor!

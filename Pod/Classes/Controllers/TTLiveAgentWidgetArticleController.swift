@@ -11,7 +11,7 @@ import UIKit
 class TTLiveAgentWidgetArticleController: UIViewController {
 
     // Data
-    var article: SupportArticle!
+    var article: TTLiveAgentWidgetSupportArticle!
     
     // Views
     var articleContentWebView: UIWebView!

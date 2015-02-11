@@ -9,8 +9,21 @@
 import UIKit
 import MessageUI
 
-public enum TTLiveAgentWidgetStyle {
-    case Push, Present
+//public enum TTLiveAgentWidgetStyle: Int {
+//    case Push = 0, Present
+//}
+
+@objc public class TTLiveAgentWidgetStyle: NSObject {
+    public class var Push: Int {
+        get {
+            return 0
+        }
+    }
+    public class var Present: Int {
+        get {
+            return 1
+        }
+    }
 }
 
 private let _TTLiveAgentWidget = TTLiveAgentWidget()
@@ -32,10 +45,10 @@ public class TTLiveAgentWidget: NSObject {
     // topics - array of topics which filters articles
     // supportEmail - email address for support
     // supportEmailFooter - dictionary of footer data (key, value)
-    // spportEmailSubject - Email subject for email composer
+    // spportEmailSubject - email subject for email composer
     //
     public var maxArticlesCount = 5
-    public var topics: [SupportTopic]!
+    public var topics: [TTLiveAgentWidgetSupportTopic]!
     
     public var supportEmail = ""
     public var supportEmailSubject = "iOS App - feedback/support"
@@ -90,8 +103,8 @@ public class TTLiveAgentWidget: NSObject {
     // If data manager has any articles and widget has any topics, then open main widget controller.
     // If the are no topics or articles then open email composer.
     //
-    public func open(fromController controller: UIViewController, style: TTLiveAgentWidgetStyle) {
-        if topics.count > 0 && dataManager.articles.count > 0 {
+    public func open(fromController controller: UIViewController, style: Int) {
+        if topics != nil && topics.count > 0 && dataManager.articles.count > 0 {
             showTopicsController(fromController: controller, style: style)
         } else {
             emailComposer.show(fromController: controller, topic: nil)
@@ -104,8 +117,8 @@ public class TTLiveAgentWidget: NSObject {
     // Allows to open topic questions controller by given keyword. 
     // If given keyword does not fit any topic act like primary function.
     //
-    public func open(fromController controller: UIViewController, keyword: String, style: TTLiveAgentWidgetStyle) {
-        if topics.count > 0 && dataManager.articles.count > 0 {
+    public func open(fromController controller: UIViewController, keyword: String, style: Int) {
+        if topics != nil && topics.count > 0 && dataManager.articles.count > 0 {
             var law = TTLiveAgentWidgetQuestionsController()
             let filteredTopics = topics.filter({$0.key == keyword})
             if filteredTopics.count > 0 {
@@ -126,7 +139,7 @@ public class TTLiveAgentWidget: NSObject {
     //
     // Open system Email composer
     //
-    public func openEmailComposer(fromController controller: UIViewController, topic: SupportTopic?) {
+    public func openEmailComposer(fromController controller: UIViewController, topic: TTLiveAgentWidgetSupportTopic?) {
         self.emailComposer.show(fromController: controller, topic: topic)
     }
     
@@ -139,10 +152,10 @@ public class TTLiveAgentWidget: NSObject {
     
     // MARK: - private functions
     
-    private func showTopicsController(fromController controller: UIViewController, style: TTLiveAgentWidgetStyle) {
+    private func showTopicsController(fromController controller: UIViewController, style: Int) {
         
         switch style {
-            case .Push:
+            case TTLiveAgentWidgetStyle.Push:
                 
                 var law = TTLiveAgentWidgetTopicsController()
                 
@@ -155,7 +168,7 @@ public class TTLiveAgentWidget: NSObject {
                 
                 controller.navigationController?.pushViewController(law, animated: true)
                 
-            case .Present:
+            case TTLiveAgentWidgetStyle.Present:
                 
                 var law = TTLiveAgentWidgetTopicsController()
                 var navCtrl = UINavigationController(rootViewController: law)
@@ -169,6 +182,8 @@ public class TTLiveAgentWidget: NSObject {
                 law.barStyle = statusBarStyle
                 
                 controller.presentViewController(navCtrl, animated: true, completion: nil)
+            default:
+                println("TTLiveAgentWidget - not supporter open style.")
         }
     }
     
@@ -179,7 +194,7 @@ public class TTLiveAgentWidget: NSObject {
 
 // MARK: - data manager
 
-public struct SupportTopic {
+@objc public class TTLiveAgentWidgetSupportTopic: NSObject {
     var key: String
     var title: String
     
@@ -189,7 +204,7 @@ public struct SupportTopic {
     }
 }
 
-public struct SupportArticle {
+@objc public class TTLiveAgentWidgetSupportArticle: NSObject {
     var title: String
     var content: String
     var keywords: String
@@ -220,7 +235,7 @@ class TTLiveAgentWidgetDataManager: NSObject {
     var apiKey: String!
     
     // Data
-    var articles: [SupportArticle] {
+    var articles: [TTLiveAgentWidgetSupportArticle] {
         get {
             return self.loadArticles()
         }
@@ -244,7 +259,7 @@ class TTLiveAgentWidgetDataManager: NSObject {
     //
     func updateArticles(onSuccess: (()->Void)?, onError: (()->Void)?) {
         
-        var url = "\(apiURL)/api/knowledgebase/articless?parent_id=\(folderId)"
+        var url = "\(apiURL)/api/knowledgebase/articles?parent_id=\(folderId)"
         
         // if there is md5 hash add it or url
         if let hash = self.articlesMD5 {
@@ -299,7 +314,7 @@ class TTLiveAgentWidgetDataManager: NSObject {
                     let articles = res["articles"] as? NSArray
                     let hash = res["hash"] as? String
                     
-                    var newArticles = [SupportArticle]()
+                    var newArticles = [TTLiveAgentWidgetSupportArticle]()
                     
                     if let articles = articles {
                         if articles.count > 0 {
@@ -313,14 +328,13 @@ class TTLiveAgentWidgetDataManager: NSObject {
                             let order = (article["rorder"] as String).toInt()
                             
                             if let order = order {
-                                newArticles.append(SupportArticle(title: title, content: content, keywords: keywords, order: order))
+                                newArticles.append(TTLiveAgentWidgetSupportArticle(title: title, content: content, keywords: keywords, order: order))
                             } else {
-                                newArticles.append(SupportArticle(title: title, content: content, keywords: keywords, order: 0))
+                                newArticles.append(TTLiveAgentWidgetSupportArticle(title: title, content: content, keywords: keywords, order: 0))
                             }
                         }
                         
-                        // Sort articles by order
-                        self.saveArticles(self.articles)
+                        self.saveArticles(newArticles)
                         println("TTLiveAgentWidget - new articles saved")
                         if let hash = hash {
                             self.articlesMD5 = hash
@@ -349,11 +363,11 @@ class TTLiveAgentWidgetDataManager: NSObject {
         })
     }
     
-    func getArticlesByKeyword(keyword: String) -> [SupportArticle] {
+    func getArticlesByKeyword(keyword: String) -> [TTLiveAgentWidgetSupportArticle] {
         return articles.filter({$0.keywords.rangeOfString(keyword) != nil})
     }
     
-    private func saveArticles(articles: [SupportArticle]?) {
+    private func saveArticles(articles: [TTLiveAgentWidgetSupportArticle]?) {
         var dict = [[String: AnyObject]]()
         if let articles = articles {
             for article in articles {
@@ -369,17 +383,17 @@ class TTLiveAgentWidgetDataManager: NSObject {
         }
     }
     
-    private func loadArticles() -> [SupportArticle] {
+    private func loadArticles() -> [TTLiveAgentWidgetSupportArticle] {
         let dict = userDefaults.objectForKey(kArticlesKeyIdentifier) as? [[String: AnyObject]]
         if let dict = dict {
-            var articles = [SupportArticle]()
+            var articles = [TTLiveAgentWidgetSupportArticle]()
             for item in dict {
                 let title = item["title"] as String?
                 let content = item["content"] as String?
                 let keywords = item["keywords"] as String?
                 let order = item["order"] as Int?
                 if title != nil && content != nil && keywords != nil && order != nil{
-                    articles.append(SupportArticle(title: title!, content: content!, keywords: keywords!, order: order!))
+                    articles.append(TTLiveAgentWidgetSupportArticle(title: title!, content: content!, keywords: keywords!, order: order!))
                 }
             }
             return articles
@@ -394,7 +408,7 @@ class TTLiveAgentWidgetDataManager: NSObject {
 // MARK: - email composer
 
 class TTLiveAgentWidgetEmailComposer: NSObject {
-    func show(fromController controller: UIViewController, topic: SupportTopic?) {
+    func show(fromController controller: UIViewController, topic: TTLiveAgentWidgetSupportTopic?) {
         
         if TTLiveAgentWidget.getInstance().supportEmail == "" {
             println("TTLiveAgentWidget - can't open email composer without support email address.")

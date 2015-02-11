@@ -11,7 +11,7 @@ import MessageUI
 
 class TTLiveAgentWidgetQuestionsController: UITableViewController {
 
-    var topic: SupportTopic!
+    var topic: TTLiveAgentWidgetSupportTopic!
     private var onceReload: dispatch_once_t = 0
 
     private let kLAArticleCellIdentifier = "TTLiveAgentWidgetArticleCell"
@@ -21,7 +21,7 @@ class TTLiveAgentWidgetQuestionsController: UITableViewController {
     
     var contentOffset: CGFloat!
     
-    var articles: [SupportArticle]!
+    var articles: [TTLiveAgentWidgetSupportArticle]!
     var tintColor: UIColor!
     var barColor: UIColor!
     var titleColor: UIColor!
@@ -164,14 +164,20 @@ extension TTLiveAgentWidgetQuestionsController {
         } else {
             var cell = tableView.dequeueReusableCellWithIdentifier(kLAIconCellIdentifier) as IconTableViewCell
             cell.accessoryType = .DisclosureIndicator
-            var image = UIImage(named: "Envelope.png")
-            image = image?.imageWithRenderingMode(.AlwaysTemplate)
             
-            cell.iconView.image = image
+            let bundle = NSBundle(forClass: TTLiveAgentWidgetQuestionsController.self)
+            let imagePath = bundle.pathForResource("Envelope", ofType: "png")
+            if imagePath != nil {
+                var image = UIImage(contentsOfFile: imagePath!)
+                image = image?.imageWithRenderingMode(.AlwaysTemplate)
+                
+                cell.iconView.image = image
+            }
             
             if tintColor != nil {
                 cell.iconView.tintColor = tintColor
             }
+        
             cell.titleLabel.text = NSLocalizedString("Send email to support", comment: "Send support email table view row.")
             return cell
         }

@@ -13,6 +13,16 @@ For better performance and security we recommend to use a proxy server. See our 
 Usage
 ----------
 
+First thing is to import the widget.
+
+```
+// Swift
+import TTLiveAgentWidget 
+
+// Objective-C
+#import "TTLiveAgentWidget-Swift.h"
+```
+
 Before you start using widget you have to configure it. At least you have to set API URL, live agent folder ID where the knowledgebase articles will be obtained, knwledgebase topics and support email. The basic configuration looks like:
 
 ```
@@ -74,7 +84,7 @@ On TTLiveAgentWidget you can edit following attributes:
 - `apiKey` - live agent api key (you should use proxy server to hide your api key)
 - `folderId` - live agent folder id with knowledgebase articles
 
-If you use `.Present` style (not recommended for `.Push`), you can also configure navigation bar look by these attributes:
+If you use `TTLiveAgentWidgetStyle.Present` style (not recommended for `TTLiveAgentWidgetStyle.Push`), you can also configure navigation bar look by these attributes:
 
 - `tintColor` - navigation bar tint color
 - `navigationBarCollor` - navigation bar background color
@@ -84,13 +94,13 @@ If you use `.Present` style (not recommended for `.Push`), you can also configur
 API
 ----------
 
-##### open(fromController controller: UIViewController, style: TTLiveAgentWidgetStyle)
+##### open(fromController controller: UIViewController, style: Int)
 
-Open widget from `controller` with style. Style can be either `.Present` (widget will be presented) or `.Push` (widget will be pushed in navigation controller). If `controller` is not embedded in `UINavigationController` you should use `.Present`. If widget has no articles, then widget open email window directly.
+Open widget from `controller` with style. Style can be either `TTLiveAgentWidgetStyle.Present` (widget will be presented) or `TTLiveAgentWidgetStyle.Push` (widget will be pushed in navigation controller). If `controller` is not embedded in `UINavigationController` you should use `TTLiveAgentWidgetStyle.Present`. If widget has no articles, then widget open email window directly.
 
-##### open(fromController controller: UIViewController, keyword: String, style: TTLiveAgentWidgetStyle)
+##### open(fromController controller: UIViewController, keyword: String, style: Int)
 
-Open knowledgebase articles directly. If `keyword` is not contained in widget's topics then widget will be opened same way as with `open(fromController controller: UIViewController, style: TTLiveAgentWidgetStyle)`.
+Open knowledgebase articles directly. If `keyword` is not contained in widget's topics then widget will be opened same way as with `open(fromController controller: UIViewController, style: Int)`.
 
 ##### updateArticles(onSuccess: (()->Void)?, onError: (()->Void)?)
 
