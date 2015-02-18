@@ -64,9 +64,11 @@ public class TTLiveAgentWidget: NSObject {
     // Configuration - data manager
     //
     // API URL - url without slash at the end, e.g. 'http://localhost:9000'
-    // Folder ID - id of live agent folder
+    // API Folder ID - id of live agent folder
     // API Key - live agent apikey
-    public var apiURL: String {
+    // API Limit - limit articles from api
+    //
+    public var apiURL: String! {
         get {
             return self.dataManager.apiURL
         }
@@ -84,15 +86,23 @@ public class TTLiveAgentWidget: NSObject {
         }
     }
     
-    public var folderId: String {
+    public var apiFolderId: Int! {
         get {
-            return self.dataManager.folderId
+            return self.dataManager.apiFolderId
         }
         set {
-            self.dataManager.folderId = newValue
+            self.dataManager.apiFolderId = newValue
         }
     }
     
+    public var apiLimitArticles: Int! {
+        get {
+            return self.dataManager.apiLimitArticles
+        }
+        set {
+            return self.dataManager.apiFolderId = newValue
+        }
+    }
     
     
     // MARK: - API functions
@@ -230,8 +240,9 @@ class TTLiveAgentWidgetDataManager: NSObject {
     //
     // API URL - url without slash at the end, e.g. 'http://localhost:9000'
     // Folder ID - id of live agent folder
-    var apiURL = ""
-    var folderId: String = ""
+    var apiURL: String!
+    var apiFolderId: Int!
+    var apiLimitArticles: Int!
     var apiKey: String!
     
     // Data
@@ -259,25 +270,29 @@ class TTLiveAgentWidgetDataManager: NSObject {
     //
     func updateArticles(onSuccess: (()->Void)?, onError: (()->Void)?) {
         
-        var url = "\(apiURL)/api/knowledgebase/articles?parent_id=\(folderId)"
+        if apiURL == nil {
+            println("TTLiveAgentWidget - API URL is missing. Can't request server.")
+            return
+        }
+        if apiFolderId == nil {
+            println("TTLiveAgentWidget - Folder ID is missing. Can't request server.")
+            return
+        }
+        
+        var url = "\(apiURL)/api/knowledgebase/articles?parent_id=\(apiFolderId)"
         
         // if there is md5 hash add it or url
         if let hash = self.articlesMD5 {
             url += "&hash=\(hash)"
         }
         
-        if apiURL == "" {
-            println("API URL is missing. Can't request server.")
-            return
-        }
-        if folderId == "" {
-            println("Folder ID is missing. Can't request server.")
-            return
-        }
-        
         if let apiKey = apiKey {
             url += "&apikey=\(apiKey)"
-            println("Warning! Your API key is contained in request URL. For security reasons you should use some proxy server.")
+            println("TTLiveAgentWidget - Warning! Your API key is contained in request URL. For security reasons you should use some proxy server.")
+        }
+        
+        if apiLimitArticles != nil {
+            url += "&limit=\(apiLimitArticles)"
         }
         
         var request = NSMutableURLRequest()

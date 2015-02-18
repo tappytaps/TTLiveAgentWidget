@@ -39,7 +39,7 @@ let liveAgentWidget = TTLiveAgentWidget.getInstance()
 
 liveAgentWidget.apiURL = "http://liveagent.server"
 liveAgentWidget.apiKey = "123456"
-liveAgentWidget.folderId = "10"
+liveAgentWidget.apiFolderId = 10
 liveAgentWidget.supportEmail = "support@something.com"
 
 // Set topics
@@ -57,7 +57,7 @@ let liveAgentWidget = TTLiveAgentWidget.getInstance()
 
 liveAgentWidget.apiURL = "http://liveagent.server"
 liveAgentWidget.apiKey = "123456"
-liveAgentWidget.folderId = "10"
+liveAgentWidget.folderId = 10
 liveAgentWidget.supportEmail = "support@something.com"
 
 // Set topics
@@ -91,7 +91,8 @@ On TTLiveAgentWidget you can edit following attributes:
 - `supportEmailFooter` - Dictionary of parameters for email footer
 - `apiURL` - live agent server url
 - `apiKey` - live agent api key (you should use proxy server to hide your api key)
-- `folderId` - live agent folder id with knowledgebase articles
+- `apiFolderId` - live agent folder id with knowledgebase articles
+- `apiLimitArticles` - limit articles from live agent api
 
 If you use `TTLiveAgentWidgetStyle.Present` style (not recommended for `TTLiveAgentWidgetStyle.Push`), you can also configure navigation bar look by these attributes:
 
