@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let liveAgentWidget = TTLiveAgentWidget.getInstance()
         
         liveAgentWidget.apiURL = "https://myapiurl"
-        liveAgentWidget.folderId = "0"
+        liveAgentWidget.apiFolderId = 0
         
         liveAgentWidget.updateArticles(nil, onError: nil)
         
