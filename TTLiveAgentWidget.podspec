@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "TTLiveAgentWidget"
-  s.version      = "0.1.0"
+  s.version      = "0.1.1"
   s.summary      = "Live agent widget for iOS written in swift."
   s.homepage     = "https://github.com/tappytaps/TTLiveAgentWidget"
   s.license      = 'MIT'
