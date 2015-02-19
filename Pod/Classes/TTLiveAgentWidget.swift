@@ -283,7 +283,9 @@ class TTLiveAgentWidgetDataManager: NSObject {
         
         // if there is md5 hash add it or url
         if let hash = self.articlesMD5 {
-            url += "&hash=\(hash)"
+            if hasArticles() {
+                url += "&hash=\(hash)"
+            }
         }
         
         if let apiKey = apiKey {
@@ -383,7 +385,9 @@ class TTLiveAgentWidgetDataManager: NSObject {
     }
     
     private func saveArticles(articles: [TTLiveAgentWidgetSupportArticle]?) {
+        
         var dict = [[String: AnyObject]]()
+        
         if let articles = articles {
             for article in articles {
                 dict.append([
@@ -393,14 +397,20 @@ class TTLiveAgentWidgetDataManager: NSObject {
                     "order": article.order
                     ])
             }
-            //println(dict)
-            userDefaults.setObject(dict, forKey: kArticlesKeyIdentifier)
+            
+            // create NSArray
+            let articlesNSArray = NSArray(array: dict)
+            
+            // write to plist file
+            articlesNSArray.writeToFile(articlesPlistPath(), atomically: true)
         }
     }
     
     private func loadArticles() -> [TTLiveAgentWidgetSupportArticle] {
-        let dict = userDefaults.objectForKey(kArticlesKeyIdentifier) as? [[String: AnyObject]]
-        if let dict = dict {
+        
+        let result = NSArray(contentsOfFile: articlesPlistPath())
+
+        if let dict = result {
             var articles = [TTLiveAgentWidgetSupportArticle]()
             for item in dict {
                 let title = item["title"] as String?
@@ -416,6 +426,21 @@ class TTLiveAgentWidgetDataManager: NSObject {
             return []
         }
         
+    }
+    
+    private func hasArticles() -> Bool {
+        let result = NSArray(contentsOfFile: articlesPlistPath())
+        return result != nil
+    }
+    
+    private func articlesPlistPath() -> String {
+        // get App's /Library/Caches directory
+        let cachesPath: AnyObject = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.AllDomainsMask, true)[0]
+    
+        // create path to plist file
+        let articlesPlistPath = cachesPath.stringByAppendingString("/liveAgentArticles.plist")
+
+        return articlesPlistPath
     }
     
 }

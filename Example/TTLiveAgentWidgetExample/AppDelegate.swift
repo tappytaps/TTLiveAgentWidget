@@ -24,7 +24,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         liveAgentWidget.updateArticles(nil, onError: nil)
         
-        // Override point for customization after application launch.
         return true
     }
 
