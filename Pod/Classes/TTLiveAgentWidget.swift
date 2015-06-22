@@ -308,11 +308,11 @@ class TTLiveAgentWidgetDataManager: NSObject {
                 return
             }
             
-            if (response as NSHTTPURLResponse).statusCode == 200 {
+            if (response as! NSHTTPURLResponse).statusCode == 200 {
                 var error: NSError?
                 
                 
-                let json = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &error) as NSDictionary
+                let json = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &error) as! NSDictionary
                 
                 // Check if data up to date
                 let upToDate = json["up-to-date"] as? Bool
@@ -334,20 +334,21 @@ class TTLiveAgentWidgetDataManager: NSObject {
                     var newArticles = [TTLiveAgentWidgetSupportArticle]()
                     
                     if let articles = articles {
+                        
                         if articles.count > 0 {
                             newArticles = []
                         }
                         
                         for article in articles {
-                            let title = article["title"] as String
-                            let content = article["content"] as String
-                            let keywords = article["keywords"] as String
-                            let order = (article["rorder"] as String).toInt()
+                            if  let title = article["title"] as? String,
+                                let content = article["content"] as? String,
+                                let keywords = article["keywords"] as? String {
                             
-                            if let order = order {
-                                newArticles.append(TTLiveAgentWidgetSupportArticle(title: title, content: content, keywords: keywords, order: order))
-                            } else {
-                                newArticles.append(TTLiveAgentWidgetSupportArticle(title: title, content: content, keywords: keywords, order: 0))
+                                if let order = (article["rorder"] as? String)?.toInt() {
+                                    newArticles.append(TTLiveAgentWidgetSupportArticle(title: title, content: content, keywords: keywords, order: order))
+                                } else {
+                                    newArticles.append(TTLiveAgentWidgetSupportArticle(title: title, content: content, keywords: keywords, order: 0))
+                                }
                             }
                         }
                         
@@ -371,8 +372,8 @@ class TTLiveAgentWidgetDataManager: NSObject {
                     })
                 }
             } else {
-                println("TTLiveAgentWidget - request URL: \((response as NSHTTPURLResponse).URL)")
-                println("TTLiveAgentWidget - server responded with status code \((response as NSHTTPURLResponse).statusCode)")
+                println("TTLiveAgentWidget - request URL: \((response as! NSHTTPURLResponse).URL)")
+                println("TTLiveAgentWidget - server responded with status code \((response as! NSHTTPURLResponse).statusCode)")
                 dispatch_async(dispatch_get_main_queue(), {
                     let _ = onError?()
                 })
@@ -413,12 +414,12 @@ class TTLiveAgentWidgetDataManager: NSObject {
         if let dict = result {
             var articles = [TTLiveAgentWidgetSupportArticle]()
             for item in dict {
-                let title = item["title"] as String?
-                let content = item["content"] as String?
-                let keywords = item["keywords"] as String?
-                let order = item["order"] as Int?
-                if title != nil && content != nil && keywords != nil && order != nil{
-                    articles.append(TTLiveAgentWidgetSupportArticle(title: title!, content: content!, keywords: keywords!, order: order!))
+                if  let title = item["title"] as? String,
+                    let content = item["content"] as? String,
+                    let keywords = item["keywords"] as? String,
+                    let order = item["order"] as? Int {
+                        
+                    articles.append(TTLiveAgentWidgetSupportArticle(title: title, content: content, keywords: keywords, order: order))
                 }
             }
             return articles
@@ -458,7 +459,7 @@ class TTLiveAgentWidgetEmailComposer: NSObject {
         if (MFMailComposeViewController.canSendMail()){
             
             let subject = TTLiveAgentWidget.getInstance().supportEmailSubject
-            let toRecipents = NSArray(objects: TTLiveAgentWidget.getInstance().supportEmail)
+            let toRecipents = [TTLiveAgentWidget.getInstance().supportEmail]
             let footerDic = TTLiveAgentWidget.getInstance().supportEmailFooter
             var emailBody = "\n\n\n\n------"
             

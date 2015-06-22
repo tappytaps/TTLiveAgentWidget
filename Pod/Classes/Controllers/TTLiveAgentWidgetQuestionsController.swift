@@ -29,7 +29,7 @@ class TTLiveAgentWidgetQuestionsController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.title = NSLocalizedString("Contact Us", comment: "Contact Us nav bar title.")
+        self.navigationItem.title = topic.title
         let backButton = UIBarButtonItem(title: NSLocalizedString("Back", comment: "Back button."), style: .Plain, target: self, action: nil)
         self.navigationController?.navigationBar.topItem?.backBarButtonItem = backButton
         
@@ -151,7 +151,7 @@ extension TTLiveAgentWidgetQuestionsController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            var cell = tableView.dequeueReusableCellWithIdentifier(kLAArticleCellIdentifier) as UITableViewCell
+            var cell = tableView.dequeueReusableCellWithIdentifier(kLAArticleCellIdentifier) as! UITableViewCell
             var topic = articles[indexPath.row]
             cell.accessoryType = .DisclosureIndicator
             cell.textLabel?.text = topic.title
@@ -162,7 +162,7 @@ extension TTLiveAgentWidgetQuestionsController {
             cell.autoresizingMask = UIViewAutoresizing.FlexibleHeight
             return cell
         } else {
-            var cell = tableView.dequeueReusableCellWithIdentifier(kLAIconCellIdentifier) as IconTableViewCell
+            var cell = tableView.dequeueReusableCellWithIdentifier(kLAIconCellIdentifier) as! IconTableViewCell
             cell.accessoryType = .DisclosureIndicator
             
             let bundle = NSBundle(forClass: TTLiveAgentWidgetQuestionsController.self)
@@ -211,11 +211,6 @@ private class IconTableViewCell: UITableViewCell {
     
     var iconView: UIImageView!
     var titleLabel: UILabel!
-    
-    override init() {
-        super.init()
-        setupViews()
-    }
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

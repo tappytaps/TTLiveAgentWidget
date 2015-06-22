@@ -124,7 +124,7 @@ extension TTLiveAgentWidgetTopicsController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = UITableViewCell()
         if indexPath.section == 0 {
-            cell = tableView.dequeueReusableCellWithIdentifier(kLAArticleCellIdentifier) as UITableViewCell
+            cell = tableView.dequeueReusableCellWithIdentifier(kLAArticleCellIdentifier) as! UITableViewCell
             var topic = topics[indexPath.row]
             cell.accessoryType = .DisclosureIndicator
             cell.textLabel?.text = topic.title

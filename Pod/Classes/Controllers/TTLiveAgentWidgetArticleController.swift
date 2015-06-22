@@ -18,7 +18,7 @@ class TTLiveAgentWidgetArticleController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.title = NSLocalizedString("Article", comment: "Article nav bar title.")
+        //self.navigationItem.title = NSLocalizedString("Article", comment: "Article nav bar title.")
         setupViews()
     }
 
@@ -44,7 +44,7 @@ class TTLiveAgentWidgetArticleController: UIViewController {
         articleContentWebView = UIWebView()
         articleContentWebView.delegate = self
         articleContentWebView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.maxY)
-        var htmlString = NSString(format: "<div style=\"padding: 0px 5px 5px 5px; font-family: %@; font-size: %i\"><h2 style=\"padding-top: 5px;font-weight: 100; margin-bottom: 0;\">%@</h2><br>%@</div>",
+        var htmlString = String(format: "<div style=\"padding: 0px 5px 5px 5px; font-family: %@; font-size: %i\"><h2 style=\"padding-top: 5px;font-weight: 100; margin-bottom: 0;\">%@</h2><br>%@</div>",
             "HelveticaNeue",
             16,
             article.title,
@@ -60,7 +60,7 @@ class TTLiveAgentWidgetArticleController: UIViewController {
 extension TTLiveAgentWidgetArticleController: UIWebViewDelegate {
     func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         if navigationType == UIWebViewNavigationType.LinkClicked {
-            UIApplication.sharedApplication().openURL(request.URL)
+            UIApplication.sharedApplication().openURL(request.URL!)
             return false
         }
         return true
