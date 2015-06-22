@@ -86,21 +86,21 @@ public class TTLiveAgentWidget: NSObject {
         }
     }
     
-    public var apiFolderId: Int! {
+    public var apiFolderId: NSNumber! {
         get {
             return self.dataManager.apiFolderId
         }
         set {
-            self.dataManager.apiFolderId = newValue
+            self.dataManager.apiFolderId = newValue.integerValue
         }
     }
     
-    public var apiLimitArticles: Int! {
+    public var apiLimitArticles: NSNumber! {
         get {
             return self.dataManager.apiLimitArticles
         }
         set {
-            return self.dataManager.apiFolderId = newValue
+            return self.dataManager.apiFolderId = newValue.integerValue
         }
     }
     
