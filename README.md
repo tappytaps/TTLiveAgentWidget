@@ -13,11 +13,19 @@ For better performance and security we recommend to use a proxy server. See our 
 Instalation
 ----------
 
-- Requires iOS 7.0+
+- Requires iOS 8.0+
 
 Manually drop content of `Pod` folder in your project.
 
-Or via CocoaPods: `pod 'TTLiveAgentWidget'`
+Or via CocoaPods:
+
+```
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '8.0'
+use_frameworks!
+
+pod 'TTLiveAgentWidget'
+```
 
 Usage
 ----------
