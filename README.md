@@ -82,7 +82,7 @@ Then usage of the widget is simple as:
 
 ```swift
 // Get Support widget instance
-let supportWidget = TTLiveAgentWidget.shared()
+let supportWidget = TTLiveAgentWidget.shared
 
 // Open widget
 supportWidget.open(from: self)
