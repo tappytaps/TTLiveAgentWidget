@@ -1,4 +1,0 @@
-target 'TTLiveAgentWidgetExample', :exclusive => true do
-  pod "TTLiveAgentWidget", :path => '../'
-end
-
