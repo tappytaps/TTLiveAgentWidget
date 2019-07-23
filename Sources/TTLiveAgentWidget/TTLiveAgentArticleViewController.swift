@@ -104,11 +104,11 @@ private extension TTLiveAgentArticleViewController {
             <head>
                 <meta name='viewport' content='width=device-width; initial-scale=1.0; maximum-scale=1.0;'>
                 <style>
-                    *{line-height:1.33;-webkit-text-size-adjust: none;}
+                    *{-webkit-text-size-adjust: none;}
                     html{overflow-x: hidden; background-color: %@;}
-                    body{overflow-x: hidden;padding: 8;font-family: '-apple-system';}
-                    #title{font-size: 20; color: %@ !important;}
-                    #content{font-size: 17; color: %@ !important;}
+                    body{overflow-x: hidden; padding: 8; font-family: '-apple-system';}
+                    #title{font-size: 20px; line-height: 24px; letter-spacing: 0.38px; color: %@ !important;}
+                    #content{font-size: 17px; line-height: 22px; letter-spacing: -0.41px;  color: %@ !important;}
                 </style>
             </head>
                 <body>
