@@ -11,7 +11,7 @@ extension TTLiveAgentWidget {
         public let questions: String
         public let needMoreHelp: String
         
-        internal init(widgetTitle: String, contactUs: String, other: String, rate: String, privacyPolicy: String, questions: String, needMoreHelp: String) {
+        public init(widgetTitle: String, contactUs: String, other: String, rate: String, privacyPolicy: String, questions: String, needMoreHelp: String) {
             self.widgetTitle = widgetTitle
             self.contactUs = contactUs
             self.other = other
