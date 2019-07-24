@@ -121,6 +121,7 @@ private extension TTLiveAgentWidget {
             if #available(iOS 11.0, *) {
                 navigationController.navigationBar.prefersLargeTitles = true
             }
+            navigationController.modalPresentationStyle = .formSheet
             presentingController.present(navigationController, animated: true)
         case .push:
             presentingController.navigationController?.pushViewController(controller, animated: true)
