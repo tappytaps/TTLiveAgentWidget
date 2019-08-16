@@ -28,9 +28,9 @@ public class TTLiveAgentWidget {
     public var supportEmail: String?
     public var supportEmailSubject = "iOS App - feedback/support"
     public var supportEmailFooter = [String: AnyObject]()
-    
+        
     /// Live agent API url
-    public var apiUrl: String?
+    public var apiUrl: URL?
     /// Live agent API key
     public var apiKey: String?
     /// Live agent folder

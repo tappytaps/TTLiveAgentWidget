@@ -26,25 +26,37 @@ class TTLiveAgentWidgetDataManager {
             return
         }
         
-        var url = "\(apiUrl)/api/knowledgebase/articles?parent_id=\(apiFolderId)"
+        var urlComponents = URLComponents(
+            url: apiUrl.appendingPathComponent("api/knowledgebase/articles"),
+            resolvingAgainstBaseURL: false
+        )
         
+        urlComponents?.queryItems = [
+            URLQueryItem(name: "parent_id", value: "\(apiFolderId)")
+        ]
+                
         if let hash = articlesMD5 {
             if hasArticles {
-                url += "&hash=\(hash)"
+                urlComponents?.queryItems?.append(URLQueryItem(name: "hash", value: hash))
             }
         }
         
         if let apiKey = TTLiveAgentWidget.shared.apiKey {
-            url += "&apikey=\(apiKey)"
+            urlComponents?.queryItems?.append(URLQueryItem(name: "apikey", value: apiKey))
             debugPrint("TTLiveAgentWidget - Warning! Your API key is contained in request URL. For security reasons you should use some proxy server.")
         }
         
         if let apiLimitArticles = TTLiveAgentWidget.shared.apiLimitArticles {
-            url += "&limit=\(apiLimitArticles)"
+            urlComponents?.queryItems?.append(URLQueryItem(name: "limit", value: "\(apiLimitArticles)"))
+        }
+        
+        guard let url = urlComponents?.url else {
+            completion(.failure(.requestFailed))
+            return
         }
         
         let request = URLRequest(
-            url: URL(string: url)!,
+            url: url,
             cachePolicy: .reloadIgnoringCacheData,
             timeoutInterval: 10
         )
