@@ -21,7 +21,7 @@ class TTLiveAgentWidgetDataManager {
             completion(.failure(.missingConfiguration))
             return
         }
-        guard let apiFolderId = TTLiveAgentWidget.shared.apiFolderId else {
+        guard TTLiveAgentWidget.shared.apiFolderId != nil || TTLiveAgentWidget.shared.apiTreePath != nil else {
             completion(.failure(.missingConfiguration))
             return
         }
@@ -31,9 +31,17 @@ class TTLiveAgentWidgetDataManager {
             resolvingAgainstBaseURL: false
         )
         
-        urlComponents?.queryItems = [
-            URLQueryItem(name: "parent_id", value: "\(apiFolderId)")
-        ]
+        if let apiFolderId = TTLiveAgentWidget.shared.apiFolderId {
+            urlComponents?.queryItems = [
+                URLQueryItem(name: "parent_id", value: "\(apiFolderId)")
+            ]
+        }
+        
+        if let apiTreePath = TTLiveAgentWidget.shared.apiTreePath {
+            urlComponents?.queryItems = [
+                URLQueryItem(name: "tree_path", value: "\(apiTreePath)")
+            ]
+        }
                 
         if let hash = articlesMD5 {
             if hasArticles {

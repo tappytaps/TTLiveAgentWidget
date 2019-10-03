@@ -35,6 +35,7 @@ public class TTLiveAgentWidget {
     public var apiKey: String?
     /// Live agent folder
     public var apiFolderId: Int?
+    public var apiTreePath: String?
     /// Articles limit for topic
     public var apiLimitArticles: Int?
     
