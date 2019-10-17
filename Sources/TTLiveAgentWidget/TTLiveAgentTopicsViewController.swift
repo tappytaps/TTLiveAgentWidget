@@ -2,41 +2,18 @@ import UIKit
 
 class TTLiveAgentTopicsViewController: UIViewController {
     
-    enum Topic {
-        case liveAgent(topic: TTLiveAgentTopic)
-        case other
-        
-        var image: UIImage? {
-            switch self {
-            case let .liveAgent(topic):
-                return topic.image
-            case .other:
-                return TTLiveAgentWidget.shared.images.other
-            }
-        }
-        
-        var title: String {
-            switch self {
-            case let .liveAgent(topic):
-                return topic.title
-            case .other:
-                return TTLiveAgentWidget.shared.strings.other
-            }
-        }
-    }
-    
     // MARK: Views
     
     private let tableView = UITableView(frame: .zero, style: .grouped)
     
     // MARK: Properties
     
-    private let topics: [Topic]
+    private let topics: [TTLiveAgentTopic]
     
     // MARK: Initialization
     
     init(topics: [TTLiveAgentTopic]) {
-        self.topics = topics.map { .liveAgent(topic: $0) } + [.other]
+        self.topics = topics
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -77,14 +54,9 @@ extension TTLiveAgentTopicsViewController: UITableViewDataSource, UITableViewDel
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let topic = topics[indexPath.row]
-        switch topic {
-        case let .liveAgent(topic):
-             let topicController = TTLiveAgentTopicViewController(topic: topic)
-             navigationController?.pushViewController(topicController, animated: true)
-        case .other:
-            let otherController = TTLiveAgentWidgetOtherViewController()
-            navigationController?.pushViewController(otherController, animated: true)
-        }
+        let topicController = TTLiveAgentTopicViewController(topic: topic)
+        
+        navigationController?.pushViewController(topicController, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
