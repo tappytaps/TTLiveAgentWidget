@@ -3,7 +3,7 @@ import MessageUI
 
 class TTLiveAgentWidgetEmailComposer: NSObject {
     
-    func open(from controller: UIViewController, topicTitle: String? = nil) {
+    func open(from controller: UIViewController, subject: String? = nil, topicTitle: String? = nil) {
         guard let email = TTLiveAgentWidget.shared.supportEmail else {
             debugPrint("TTLiveAgentWidget - can't open email composer without support email address.")
             return
@@ -12,7 +12,6 @@ class TTLiveAgentWidgetEmailComposer: NSObject {
             return
         }
         
-        let subject = TTLiveAgentWidget.shared.supportEmailSubject
         let toRecipents = [email]
         let footerDic = TTLiveAgentWidget.shared.supportEmailFooter
         var emailBody = "\n\n\n\n------"
@@ -26,7 +25,7 @@ class TTLiveAgentWidgetEmailComposer: NSObject {
         }
         
         let mailController = MFMailComposeViewController()
-        mailController.setSubject(subject)
+        mailController.setSubject(subject ?? TTLiveAgentWidget.shared.supportEmailSubject)
         mailController.mailComposeDelegate = self
         mailController.setToRecipients(toRecipents)
         mailController.setMessageBody(emailBody, isHTML: false)

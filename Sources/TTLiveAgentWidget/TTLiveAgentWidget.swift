@@ -26,6 +26,9 @@ public class TTLiveAgentWidget {
     public var supportEmailSubject = "iOS App - feedback/support"
     public var supportEmailFooter = [String: AnyObject]()
         
+    /// Your app id. Used for rate app action.
+    public var appId: String?
+    
     /// Live agent API url
     public var apiUrl: URL?
     /// Live agent API key
@@ -72,8 +75,16 @@ public class TTLiveAgentWidget {
     ///
     /// - Parameter controller: Controller to open mail composer from.
     /// - Parameter topicTitle: Topic title placed at the bottom of email body.
-    public func openMailComposer(from controller: UIViewController, topicTitle: String? = nil) {
-        mailComposer.open(from: controller, topicTitle: topicTitle)
+    public func openMailComposer(from controller: UIViewController, subject: String? = nil, topicTitle: String? = nil) {
+        mailComposer.open(from: controller, subject: subject, topicTitle: topicTitle)
+    }
+    
+    /// Opens App Store page for given appId.
+    public func openRateApp() {
+        guard let rateAppUrl = rateAppUrl else {
+            return
+        }
+        UIApplication.shared.open(rateAppUrl)
     }
     
 }
@@ -116,6 +127,13 @@ private extension TTLiveAgentWidget {
         case .push:
             presentingController.navigationController?.pushViewController(controller, animated: true)
         }
+    }
+    
+    var rateAppUrl: URL? {
+        guard let appId = appId else {
+            return nil
+        }
+        return URL(string: "https://itunes.apple.com/us/app/id\(appId)?action=write-review")
     }
     
 }
