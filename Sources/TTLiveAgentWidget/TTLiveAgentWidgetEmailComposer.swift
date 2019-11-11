@@ -13,11 +13,12 @@ class TTLiveAgentWidgetEmailComposer: NSObject {
         }
         
         let toRecipents = [email]
-        let footerDic = TTLiveAgentWidget.shared.supportEmailFooter
-        var emailBody = "\n\n\n\n------"
+        var emailBody = "\n\n\n------"
         
-        for (key, value) in footerDic {
-            emailBody += "\n\(key): \(value)"
+        if let footer = TTLiveAgentWidget.shared.supportEmailFooterProvider?() {
+            for (key, value) in footer.sorted(by: { $0.key < $1.key }) {
+                emailBody += "\n\(key): \(value)"
+            }
         }
         
         if let topic = topicTitle {

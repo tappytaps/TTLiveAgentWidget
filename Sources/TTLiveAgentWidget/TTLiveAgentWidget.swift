@@ -24,7 +24,7 @@ public class TTLiveAgentWidget {
     
     public var supportEmail: String?
     public var supportEmailSubject = "iOS App - feedback/support"
-    public var supportEmailFooter = [String: AnyObject]()
+    public var supportEmailFooterProvider: (() -> [String: String])?
         
     /// Your app id. Used for rate app action.
     public var appId: String?
