@@ -39,6 +39,7 @@ public class TTLiveAgentWidget {
     /// Articles limit for topic
     public var apiLimitArticles: Int?
     
+    public var baseUrl: URL? { dataManager.baseUrl }
     
     /// Update articles.
     ///

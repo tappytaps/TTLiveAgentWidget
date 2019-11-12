@@ -3,6 +3,7 @@ import Foundation
 class TTLiveAgentWidgetDataManager {
     
     private let articlesMD5UserDefaultsKey = "com.tappytaps.support.widget.articlemd5"
+    private let baseUrlUserDefaultsKey = "com.tappytaps.support.widget.baseurl"
     
     enum UpdateArticlesError: Error {
         case missingConfiguration
@@ -84,6 +85,7 @@ class TTLiveAgentWidgetDataManager {
                 if let articlesResponse = result.response {
                     self.saveArticles(from: articlesResponse)
                 }
+                self.baseUrl = result.baseUrl
                 completion(.success(()))
             } catch let error {
                 debugPrint("🔴", error)
@@ -116,6 +118,15 @@ class TTLiveAgentWidgetDataManager {
         }
         set {
             userDefaults.set(newValue, forKey: articlesMD5UserDefaultsKey)
+        }
+    }
+    
+    private(set) var baseUrl: URL? {
+        get {
+            userDefaults.url(forKey: baseUrlUserDefaultsKey)
+        }
+        set {
+            userDefaults.set(newValue, forKey: baseUrlUserDefaultsKey)
         }
     }
     

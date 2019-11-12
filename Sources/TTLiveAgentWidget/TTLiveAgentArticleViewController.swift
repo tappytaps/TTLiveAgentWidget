@@ -26,7 +26,7 @@ class TTLiveAgentArticleViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         setupNavigationItem()
         setupViews()
         
@@ -74,6 +74,9 @@ private extension TTLiveAgentArticleViewController {
         }
         
         view.addSubview(webView)
+        
+        webView.isOpaque = false
+        webView.backgroundColor = .clear
         webView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
@@ -126,7 +129,7 @@ private extension TTLiveAgentArticleViewController {
             article.content
         )
         
-        webView.loadHTMLString(html, baseURL: nil)
+        webView.loadHTMLString(html, baseURL: TTLiveAgentWidget.shared.baseUrl)
     }
     
     func hexString(from color: UIColor) -> String {
@@ -141,4 +144,3 @@ private extension TTLiveAgentArticleViewController {
     }
     
 }
-
