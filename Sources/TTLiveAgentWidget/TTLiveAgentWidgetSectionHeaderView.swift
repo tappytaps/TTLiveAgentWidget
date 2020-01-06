@@ -33,16 +33,14 @@ class TTLiveAgentWidgetSectionHeaderView: UITableViewHeaderFooterView {
 private extension TTLiveAgentWidgetSectionHeaderView {
     
     func setupViews() {
-        layoutMargins = UIEdgeInsets(top: 16, left: 0, bottom: 8, right: 0)
-        
         label.font = .boldSystemFont(ofSize: 20)
         label.translatesAutoresizingMaskIntoConstraints = false
         
         addSubview(label)
         
         let constraints: [NSLayoutConstraint] = [
-            label.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
-            label.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor),
+            label.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
+            label.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -8),
             label.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
             label.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor)
         ]

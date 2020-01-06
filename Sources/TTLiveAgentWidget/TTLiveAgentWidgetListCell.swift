@@ -45,9 +45,9 @@ private extension TTLiveAgentWidgetListCell {
         accessoryType = .disclosureIndicator
         
         if #available(iOS 13.0, *) {
-            bottomSeparator.backgroundColor = .systemGray2
+            bottomSeparator.backgroundColor = .systemFill
         } else {
-            bottomSeparator.backgroundColor = UIColor(white: 192 / 255, alpha: 1)
+            bottomSeparator.backgroundColor = UIColor(white: 0, alpha: 0.08)
         }
         bottomSeparator.translatesAutoresizingMaskIntoConstraints = false
 

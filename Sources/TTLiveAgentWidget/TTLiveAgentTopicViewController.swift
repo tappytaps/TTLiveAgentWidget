@@ -145,6 +145,8 @@ private extension TTLiveAgentTopicViewController {
         extendedLayoutIncludesOpaqueBars = true
         
         tableView.configureWidgetStyle()
+        tableView.estimatedRowHeight = 56
+        tableView.estimatedSectionHeaderHeight = 64
         tableView.register(TTLiveAgentWidgetListCell.self, forCellReuseIdentifier: "articleCell")
         tableView.register(TTLiveAgentWidgetListCell.self, forCellReuseIdentifier: "contactUsCell")
         tableView.register(TTLiveAgentWidgetSectionHeaderView.self, forHeaderFooterViewReuseIdentifier: "sectionHeader")

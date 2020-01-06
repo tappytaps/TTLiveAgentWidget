@@ -89,6 +89,10 @@ extension TTLiveAgentTopicsViewController: UITableViewDataSource, UITableViewDel
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return .leastNormalMagnitude
     }
@@ -111,6 +115,7 @@ private extension TTLiveAgentTopicsViewController {
         extendedLayoutIncludesOpaqueBars = true
         
         tableView.configureWidgetStyle()
+        tableView.estimatedRowHeight = 56
         tableView.estimatedSectionHeaderHeight = 64
         tableView.register(TTLiveAgentWidgetListCell.self, forCellReuseIdentifier: "topicCell")
         tableView.delegate = self

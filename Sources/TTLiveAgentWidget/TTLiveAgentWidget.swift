@@ -114,14 +114,18 @@ private extension TTLiveAgentWidget {
             let navigationController = UINavigationController(rootViewController: controller)
             if #available(iOS 13.0, *) {
                 navigationController.navigationBar.standardAppearance.configureWithOpaqueBackground()
-                navigationController.navigationBar.standardAppearance.shadowColor = .lightGray
+                navigationController.navigationBar.standardAppearance.shadowColor = .systemFill
             } else {
                 navigationController.navigationBar.isOpaque = true
                 navigationController.navigationBar.isTranslucent = false
                 navigationController.navigationBar.backgroundColor = .white
             }
             if #available(iOS 11.0, *) {
-                navigationController.navigationBar.prefersLargeTitles = true
+                if UIScreen.main.bounds.width <= 568 {
+                    navigationController.navigationBar.prefersLargeTitles = false
+                } else {
+                    navigationController.navigationBar.prefersLargeTitles = true
+                }
             }
             navigationController.modalPresentationStyle = .formSheet
             presentingController.present(navigationController, animated: true)
