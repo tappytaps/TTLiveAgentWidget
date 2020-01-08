@@ -121,7 +121,7 @@ private extension TTLiveAgentWidget {
                 navigationController.navigationBar.backgroundColor = .white
             }
             if #available(iOS 11.0, *) {
-                if UIScreen.main.bounds.width <= 568 {
+                if UIScreen.main.bounds.width <= 320 {
                     navigationController.navigationBar.prefersLargeTitles = false
                 } else {
                     navigationController.navigationBar.prefersLargeTitles = true
