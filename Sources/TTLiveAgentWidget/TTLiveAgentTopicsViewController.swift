@@ -2,41 +2,18 @@ import UIKit
 
 class TTLiveAgentTopicsViewController: UIViewController {
     
-    enum Topic {
-        case liveAgent(topic: TTLiveAgentTopic)
-        case rateApp
-        
-        var image: UIImage? {
-            switch self {
-            case let .liveAgent(topic):
-                return topic.image
-            case .rateApp:
-                return TTLiveAgentWidget.shared.images.rateApp
-            }
-        }
-        
-        var title: String {
-            switch self {
-            case let .liveAgent(topic):
-                return topic.title
-            case .rateApp:
-                return TTLiveAgentWidget.shared.strings.rateApp
-            }
-        }
-    }
-    
     // MARK: Views
     
     private let tableView = UITableView(frame: .zero, style: .grouped)
     
     // MARK: Properties
     
-    private let topics: [Topic]
+    private let topics: [TTLiveAgentTopic]
     
     // MARK: Initialization
     
     init(topics: [TTLiveAgentTopic]) {
-        self.topics = topics.map { .liveAgent(topic: $0) } + [.rateApp]
+        self.topics = topics
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -78,13 +55,8 @@ extension TTLiveAgentTopicsViewController: UITableViewDataSource, UITableViewDel
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let topic = topics[indexPath.row]
         
-        switch topic {
-        case let .liveAgent(topic):
-            let topicController = TTLiveAgentTopicViewController(topic: topic)
-            navigationController?.pushViewController(topicController, animated: true)
-        case .rateApp:
-            TTLiveAgentWidget.shared.openRateApp()
-        }
+        let topicController = TTLiveAgentTopicViewController(topic: topic)
+        navigationController?.pushViewController(topicController, animated: true)
 
         tableView.deselectRow(at: indexPath, animated: true)
     }
