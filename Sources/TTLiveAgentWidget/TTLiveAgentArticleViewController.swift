@@ -110,6 +110,7 @@ private extension TTLiveAgentArticleViewController {
                     *{-webkit-text-size-adjust: none;}
                     html{overflow-x: hidden; background-color: %@;}
                     body{overflow-x: hidden; padding: 8; font-family: '-apple-system';}
+                    a{color: %@ !important;}
                     #title{font-size: 20px; line-height: 24px; letter-spacing: 0.38px; color: %@ !important;}
                     #content{font-size: 17px; line-height: 22px; letter-spacing: -0.41px;  color: %@ !important;}
                 </style>
@@ -123,6 +124,7 @@ private extension TTLiveAgentArticleViewController {
         let html = String(
             format: htmlTemplate,
             hexString(from: backgroundColor),
+            hexString(from: view.tintColor),
             hexString(from: titleColor),
             hexString(from: contentColor),
             article.title,
