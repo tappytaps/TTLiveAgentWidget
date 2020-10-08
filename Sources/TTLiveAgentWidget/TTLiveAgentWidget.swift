@@ -85,7 +85,7 @@ public class TTLiveAgentWidget {
         guard let rateAppUrl = rateAppUrl else {
             return
         }
-        UIApplication.shared.open(rateAppUrl)
+        UIApplication.shared.openURL(rateAppUrl)
     }
     
 }
