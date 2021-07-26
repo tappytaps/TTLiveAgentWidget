@@ -5,4 +5,5 @@ public struct TTLiveAgentArticle: Codable {
     let content: String
     let keywords: String
     let rorder: String
+    let urlcode: String
 }

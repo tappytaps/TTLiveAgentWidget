@@ -62,6 +62,9 @@ private extension TTLiveAgentArticleViewController {
             standardAppearance.shadowColor = .clear
             navigationItem.standardAppearance = standardAppearance
         }
+        if isRootController {
+            navigationItem.leftBarButtonItem = .closeItem(target: self, action: #selector(closeButtonAction))
+        }
     }
     
     func setupViews() {
@@ -143,6 +146,10 @@ private extension TTLiveAgentArticleViewController {
         color.getRed(&r, green: &g, blue: &b, alpha: &a)
         
         return String(format: "#%02x%02x%02x%02x", Int(r * 255), Int(g * 255), Int(b * 255), Int(a * 255))
+    }
+    
+    @objc func closeButtonAction() {
+        dismiss(animated: true)
     }
     
 }
