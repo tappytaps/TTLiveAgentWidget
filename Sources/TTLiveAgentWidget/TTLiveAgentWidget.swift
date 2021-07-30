@@ -97,21 +97,21 @@ public class TTLiveAgentWidget {
             if let urlCodeStringRange = Range(urlCodeRange, in: urlString) {
                 let urlCode = String(urlString[urlCodeStringRange])
                 let articles = dataManager.loadArticles()
-                
+
                 if let article = articles.first(where: { $0.urlcode == urlCode }) {
                     open(article, from: viewController, transition: .present)
                     return
                 }
             }
         }
-        
+
         let safariController = SFSafariViewController(url: url)
         safariController.modalPresentationStyle = .formSheet
         safariController.preferredControlTintColor = UIApplication.shared.keyWindow?.tintColor
         if #available(iOS 11.0, *) {
             safariController.dismissButtonStyle = .close
         }
-        
+
         viewController.present(safariController, animated: true)
     }
     

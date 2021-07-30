@@ -27,6 +27,8 @@ class TTLiveAgentWidgetDataManager {
             return
         }
         
+        validateArticles()
+        
         var urlComponents = URLComponents(
             url: apiUrl.appendingPathComponent("api/knowledgebase/articles"),
             resolvingAgainstBaseURL: false
@@ -94,12 +96,18 @@ class TTLiveAgentWidgetDataManager {
         }.resume()
     }
     
+    func validateArticles() {
+        do {
+            try decodeArticles()
+        } catch {
+            articlesMD5 = nil
+        }
+    }
+    
     func loadArticles() -> [TTLiveAgentArticle] {
         do {
-            let data = try Data(contentsOf: articlesPlistUrl)
-            let articles = try PropertyListDecoder().decode([TTLiveAgentArticle].self, from: data)
-            return articles
-        } catch _ {
+            return try decodeArticles()
+        } catch {
             return []
         }
     }
@@ -111,6 +119,15 @@ class TTLiveAgentWidgetDataManager {
         return loadArticles()
             .filter { $0.keywords.contains(keyword) }
     }
+    
+    @discardableResult
+    private func decodeArticles() throws -> [TTLiveAgentArticle] {
+        let data = try Data(contentsOf: articlesPlistUrl)
+        let articles = try PropertyListDecoder().decode([TTLiveAgentArticle].self, from: data)
+        return articles
+    }
+    
+    private var hasArticles: Bool { !loadArticles().isEmpty }
     
     private var articlesMD5: String? {
         get {
@@ -128,11 +145,6 @@ class TTLiveAgentWidgetDataManager {
         set {
             userDefaults.set(newValue, forKey: baseUrlUserDefaultsKey)
         }
-    }
-    
-    private var hasArticles: Bool {
-        let data = try? Data(contentsOf: articlesPlistUrl)
-        return data != nil
     }
     
     private var articlesPlistUrl: URL {
