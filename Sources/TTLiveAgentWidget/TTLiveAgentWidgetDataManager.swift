@@ -112,6 +112,10 @@ class TTLiveAgentWidgetDataManager {
         }
     }
     
+    func articleForUrlCode(_ urlCode: String) -> TTLiveAgentArticle? {
+        loadArticles().first(where: { $0.urlcode == urlCode })
+    }
+    
     func loadArticles(for topic: TTLiveAgentTopic) -> [TTLiveAgentArticle] {
         guard let keyword = topic.key else {
             return []

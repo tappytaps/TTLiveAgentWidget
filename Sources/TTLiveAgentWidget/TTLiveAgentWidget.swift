@@ -88,23 +88,11 @@ public class TTLiveAgentWidget {
     ///   - url: Article URL
     ///   - viewController: Source view controller
     public func `open`(_ url: URL, from viewController: UIViewController) {
-        let urlString = url.absoluteString
-        let urlRange = NSRange(urlString.startIndex..<urlString.endIndex, in: urlString)
-        let regex = try! NSRegularExpression(pattern: #"(http|https):\/\/.*\/(?<urlcode>[\d]+)"#)
-
-        if let match = regex.firstMatch(in: urlString, options: [], range: urlRange) {
-            let urlCodeRange = match.range(at: match.numberOfRanges - 1)
-            if let urlCodeStringRange = Range(urlCodeRange, in: urlString) {
-                let urlCode = String(urlString[urlCodeStringRange])
-                let articles = dataManager.loadArticles()
-
-                if let article = articles.first(where: { $0.urlcode == urlCode }) {
-                    open(article, from: viewController, transition: .present)
-                    return
-                }
-            }
+        if let urlCode = TTLiveAgentUtils.urlCode(from: url), let article = dataManager.articleForUrlCode(urlCode) {
+            open(article, from: viewController, transition: .present)
+            return
         }
-
+        
         let safariController = SFSafariViewController(url: url)
         safariController.modalPresentationStyle = .formSheet
         safariController.preferredControlTintColor = UIApplication.shared.keyWindow?.tintColor

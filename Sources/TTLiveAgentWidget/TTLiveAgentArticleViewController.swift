@@ -53,6 +53,7 @@ class TTLiveAgentArticleViewController: UIViewController {
 private extension TTLiveAgentArticleViewController {
     
     func setupNavigationItem() {
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         if #available(iOS 11.0, *) {
             navigationItem.largeTitleDisplayMode = .never
         }
@@ -81,7 +82,8 @@ private extension TTLiveAgentArticleViewController {
         webView.isOpaque = false
         webView.backgroundColor = .clear
         webView.translatesAutoresizingMaskIntoConstraints = false
-
+        webView.navigationDelegate = self
+        
         NSLayoutConstraint.activate([
             webView.topAnchor.constraint(equalTo: view.topAnchor),
             webView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -153,6 +155,32 @@ private extension TTLiveAgentArticleViewController {
     
     @objc func closeButtonAction() {
         dismiss(animated: true)
+    }
+    
+}
+
+// MARK: - WKNavigationDelegate
+
+extension TTLiveAgentArticleViewController: WKNavigationDelegate {
+    
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        switch navigationAction.navigationType {
+        case .linkActivated:
+            if let url = navigationAction.request.url {
+                let dataManager = TTLiveAgentWidgetDataManager.shared
+                if let urlCode = TTLiveAgentUtils.urlCode(from: url), let article = dataManager.articleForUrlCode(urlCode) {
+                    let articleController = TTLiveAgentArticleViewController(article: article)
+                    navigationController?.pushViewController(articleController, animated: true)
+                    decisionHandler(.cancel)
+                } else {
+                    decisionHandler(.allow)
+                }
+            } else {
+                decisionHandler(.allow)
+            }
+        default:
+            decisionHandler(.allow)
+        }
     }
     
 }
