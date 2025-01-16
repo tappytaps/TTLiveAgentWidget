@@ -5,10 +5,6 @@ class TTLiveAgentWidgetEmailComposer: NSObject {
     
     func open(from controller: UIViewController, subject: String? = nil, topicTitle: String? = nil) {
         guard let email = TTLiveAgentWidget.shared.supportEmail else {
-            debugPrint("TTLiveAgentWidget - can't open email composer without support email address.")
-            return
-        }
-        guard MFMailComposeViewController.canSendMail() else {
             return
         }
         
@@ -23,6 +19,17 @@ class TTLiveAgentWidgetEmailComposer: NSObject {
         
         if let topic = topicTitle {
             emailBody += "\nTopic: \(topic)"
+        }
+        
+        // On Mac Catalyst the MFMailComposeViewController.canSendMail() returns false. So we open the mail composer via mailto url.
+        guard MFMailComposeViewController.canSendMail() else {
+            #if targetEnvironment(macCatalyst)
+            let mailtoURLString = String(format: "mailto:%@?subject=%@&body=%@", email, subject ?? TTLiveAgentWidget.shared.supportEmailSubject, emailBody)
+            if let mailtoURL = URL(string: mailtoURLString) {
+                UIApplication.shared.open(mailtoURL)
+            }
+            #endif
+            return
         }
         
         let mailController = MFMailComposeViewController()
