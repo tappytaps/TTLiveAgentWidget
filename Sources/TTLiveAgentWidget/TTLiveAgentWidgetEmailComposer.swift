@@ -21,24 +21,22 @@ class TTLiveAgentWidgetEmailComposer: NSObject {
             emailBody += "\nTopic: \(topic)"
         }
         
-        // On Mac Catalyst the MFMailComposeViewController.canSendMail() returns false. So we open the mail composer via mailto url.
-        guard MFMailComposeViewController.canSendMail() else {
-            #if targetEnvironment(macCatalyst)
+        if MFMailComposeViewController.canSendMail() {
+            let mailController = MFMailComposeViewController()
+            mailController.setSubject(subject ?? TTLiveAgentWidget.shared.supportEmailSubject)
+            mailController.mailComposeDelegate = self
+            mailController.setToRecipients(toRecipents)
+            mailController.setMessageBody(emailBody, isHTML: false)
+            
+            controller.present(mailController, animated: true)
+        } else {
+            // On Mac Catalyst or if the system Mail app is not installed the MFMailComposeViewController.canSendMail() returns false.
+            // So we open the mail composer via mailto url.
             let mailtoURLString = String(format: "mailto:%@?subject=%@&body=%@", email, subject ?? TTLiveAgentWidget.shared.supportEmailSubject, emailBody)
-            if let mailtoURL = URL(string: mailtoURLString) {
+            if let mailtoURL = URL(string: mailtoURLString), UIApplication.shared.canOpenURL(mailtoURL) {
                 UIApplication.shared.open(mailtoURL)
             }
-            #endif
-            return
         }
-        
-        let mailController = MFMailComposeViewController()
-        mailController.setSubject(subject ?? TTLiveAgentWidget.shared.supportEmailSubject)
-        mailController.mailComposeDelegate = self
-        mailController.setToRecipients(toRecipents)
-        mailController.setMessageBody(emailBody, isHTML: false)
-        
-        controller.present(mailController, animated: true)
     }
     
 }
